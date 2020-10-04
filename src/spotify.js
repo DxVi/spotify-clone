@@ -1,8 +1,7 @@
 // https://developer.spotify.com/documentation/web-playback-sdk/quick-start/#
 
 export const authEndpoint = "https://accounts.spotify.com/en/authorize";
-const redirectUri = "http://192.168.1.100:8123/auth/external/callback";
-// "http:%2F%2Flocalhost:3000%2Fcallback";
+const redirectUri = "http://localhost:3000/";
 const clientId = "35b48466b82f4cb2802fa40f83654390";
 
 const scopes = [
@@ -12,6 +11,18 @@ const scopes = [
   "user-top-read",
   "user-modify-playback-state",
 ];
+
+export const getTokenFromUrl = () => {
+  return window.location.hash
+    .substring(1)
+    .split("&")
+    .reduce((initial, item) => {
+      // #accessToken=myspersecretkey&name=sonny
+      let parts = item.split("=");
+      initial[parts[0]] = decodeURIComponent(parts[1]);
+      return initial;
+    }, {});
+};
 
 //string interpolation
 export const loginUrl = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
